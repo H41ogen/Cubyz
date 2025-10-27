@@ -15,6 +15,7 @@ pub const GuiComponent = union(enum) {
 	pub const ScrollBar = @import("components/ScrollBar.zig");
 	pub const ContinuousSlider = @import("components/ContinuousSlider.zig");
 	pub const DiscreteSlider = @import("components/DiscreteSlider.zig");
+	pub const SliderWithTextInput = @import("components/SliderWithTextInput.zig");
 	pub const TextInput = @import("components/TextInput.zig");
 	pub const VerticalList = @import("components/VerticalList.zig");
 
@@ -28,6 +29,7 @@ pub const GuiComponent = union(enum) {
 	scrollBar: *ScrollBar,
 	continuousSlider: *ContinuousSlider,
 	discreteSlider: *DiscreteSlider,
+	sliderWithTextInput: *SliderWithTextInput,
 	textInput: *TextInput,
 	verticalList: *VerticalList,
 

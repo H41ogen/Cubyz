@@ -12,6 +12,7 @@ const CheckBox = @import("../components/CheckBox.zig");
 const ContinuousSlider = @import("../components/ContinuousSlider.zig");
 const DiscreteSlider = @import("../components/DiscreteSlider.zig");
 const VerticalList = @import("../components/VerticalList.zig");
+const SliderWithTextInput = @import("../components/SliderWithTextInput.zig");
 
 pub var window = GuiWindow{
 	.contentSize = Vec2f{128, 256},
@@ -117,7 +118,9 @@ fn vulkanTestingWindowCallback(newValue: bool) void {
 
 pub fn onOpen() void {
 	const list = VerticalList.init(.{padding, 16 + padding}, 300, 16);
+	
 	list.add(ContinuousSlider.init(.{0, 0}, 128, 10.0, 154.0, @floatFromInt(settings.fpsCap orelse 154), &fpsCapCallback, &fpsCapFormatter));
+	
 	list.add(DiscreteSlider.init(.{0, 0}, 128, "#ffffffRender Distance: ", "{}", &renderDistances, @min(@max(settings.renderDistance, renderDistances[0]) - renderDistances[0], renderDistances.len - 1), &renderDistanceCallback));
 	if(main.game.world == null) {
 		list.add(DiscreteSlider.init(.{0, 0}, 128, "#ffffffHighest LOD: ", "{s}", &lodValues, @min(settings.highestLod, settings.highestSupportedLod), &highestLodCallback));
