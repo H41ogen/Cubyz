@@ -105,7 +105,7 @@ pub fn onOpen() void {
 	if(!editingKeyboard) {
 		list.add(ContinuousSlider.init(.{0, 0}, 256, 0, 5, main.settings.controllerAxisDeadzone, &updateDeadzone, &deadzoneFormatter));
 	}
-	for(&main.KeyBoard.keys) |*key| {
+	for(main.KeyBoard.keys) |*key| {
 		const label = Label.init(.{0, 0}, 128, key.name, .left);
 		const button = if(key == selectedKey) (Button.initText(.{16, 0}, 128, "...", .{})) else (Button.initText(.{16, 0}, 128, if(editingKeyboard) key.getName() else key.getGamepadName(), .{.callback = if(editingKeyboard) &keyFunction else &gamepadFunction, .arg = @intFromPtr(key)}));
 		const unbindBtn = Button.initText(.{16, 0}, 64, "Unbind", .{.callback = &unbindKey, .arg = @intFromPtr(key)});

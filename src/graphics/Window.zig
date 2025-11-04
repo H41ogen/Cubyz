@@ -79,7 +79,7 @@ pub const Gamepad = struct {
 				}
 			}
 			const isGrabbed = grabbed;
-			for(&main.KeyBoard.keys) |*key| {
+			for(main.KeyBoard.keys) |*key| {
 				if(key.gamepadAxis == null) {
 					if(key.gamepadButton >= 0) {
 						const oldPressed = oldState.buttons[@intCast(key.gamepadButton)] != 0;
@@ -476,7 +476,7 @@ pub const GLFWCallbacks = struct { // MARK: GLFWCallbacks
 		const textKeyPressedInTextField = main.gui.selectedTextInput != null and c.glfwGetKeyName(glfw_key, scancode) != null;
 		const isGrabbed = grabbed;
 		if(action == c.GLFW_PRESS or action == c.GLFW_RELEASE) {
-			for(&main.KeyBoard.keys) |*key| {
+			for(main.KeyBoard.keys) |*key| {
 				if(glfw_key == key.key) {
 					if(glfw_key != c.GLFW_KEY_UNKNOWN or scancode == key.scancode) {
 						key.setPressed(action == c.GLFW_PRESS, isGrabbed, mods, textKeyPressedInTextField);
@@ -547,7 +547,7 @@ pub const GLFWCallbacks = struct { // MARK: GLFWCallbacks
 		const mods: Key.Modifiers = @bitCast(@as(u6, @intCast(_mods)));
 		const isGrabbed = grabbed;
 		if(action == c.GLFW_PRESS or action == c.GLFW_RELEASE) {
-			for(&main.KeyBoard.keys) |*key| {
+			for(main.KeyBoard.keys) |*key| {
 				if(button == key.mouseButton) {
 					key.setPressed(action == c.GLFW_PRESS, isGrabbed, mods, false);
 				}
@@ -629,7 +629,7 @@ fn updateCursor() void {
 
 fn releaseButtonsOnGrabChange(grab: bool) void {
 	const state: Key.Requirement = if(grab) .inMenu else .inGame;
-	for(&main.KeyBoard.keys) |*key| {
+	for(main.KeyBoard.keys) |*key| {
 		if(key.notifyRequirement == state and key.pressed) {
 			key.pressed = false;
 			if(key.releaseAction) |rel| rel(key.modsOnPress);
