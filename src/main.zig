@@ -318,6 +318,9 @@ fn toggleHideGui(_: Window.Key.Modifiers) void {
 fn toggleHideDisplayItem(_: Window.Key.Modifiers) void {
 	itemdrop.ItemDisplayManager.showItem = !itemdrop.ItemDisplayManager.showItem;
 }
+fn toggleHidePlayerNames(_: Window.Key.Modifiers) void {
+	entity.namesHidden = !entity.namesHidden;
+}
 fn toggleDebugOverlay(_: Window.Key.Modifiers) void {
 	gui.toggleWindow("debug");
 }
@@ -422,6 +425,7 @@ pub const KeyBoard = struct { // MARK: KeyBoard
 		// debug:
 		.{.name = "hideMenu", .key = c.GLFW_KEY_F1, .pressAction = &toggleHideGui},
 		.{.name = "hideDisplayItem", .key = c.GLFW_KEY_F2, .pressAction = &toggleHideDisplayItem},
+		.{.name = "togglePlayerNames", .key = c.GLFW_KEY_F2, .pressAction = &toggleHidePlayerNames},
 		.{.name = "debugOverlay", .key = c.GLFW_KEY_F3, .pressAction = &toggleDebugOverlay},
 		.{.name = "performanceOverlay", .key = c.GLFW_KEY_F4, .pressAction = &togglePerformanceOverlay},
 		.{.name = "gpuPerformanceOverlay", .key = c.GLFW_KEY_F5, .pressAction = &toggleGPUPerformanceOverlay},
