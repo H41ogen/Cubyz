@@ -31,6 +31,18 @@ pub const camera = struct { // MARK: camera
 	pub var rotation: Vec3f = Vec3f{0, 0, 0};
 	pub var direction: Vec3f = Vec3f{0, 0, 0};
 	pub var viewMatrix: Mat4f = Mat4f.identity();
+	pub var cinematicMode = false;
+
+	pub const cinematicCamera = struct {
+		pub var vel: Vec2f = .{0, 0};
+		pub var friction: f32 = 0.75;
+
+		pub fn update(deltaTime: f64) void {
+			vel *= @splat(std.math.pow(f32, 1 - friction, @floatCast(deltaTime)));
+			moveRotation(@floatCast(deltaTime*vel[0]), @floatCast(deltaTime*vel[1]));
+		}
+	};
+
 	pub fn moveRotation(mouseX: f32, mouseY: f32) void {
 		// Mouse movement along the y-axis rotates the image along the x-axis.
 		rotation[0] += mouseY;
@@ -803,6 +815,8 @@ pub fn hyperSpeedToggle() void {
 }
 
 pub fn update(deltaTime: f64) void { // MARK: update()
+	if(camera.cinematicMode) camera.cinematicCamera.update(deltaTime);
+
 	physics.calculateProperties();
 	var acc = Vec3d{0, 0, 0};
 	const speedMultiplier: f32 = if(Player.hyperSpeed.load(.monotonic)) 4.0 else 1.0;

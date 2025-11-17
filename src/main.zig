@@ -361,6 +361,16 @@ fn setHotbarSlot(i: comptime_int) *const fn() void {
 	}.set;
 }
 
+fn openClientSettings() void {
+	ungrabMouse();
+	gui.openWindow("client_settings");
+}
+fn toggleCinematicCamera() void {
+	game.camera.cinematicCamera.vel = @splat(0);
+	game.camera.cinematicMode = !game.camera.cinematicMode;
+	gui.windowlist.client_settings.needsUpdate = true;
+}
+
 pub const KeyBoard = struct { // MARK: KeyBoard
 	const c = Window.c;
 	pub var keys = [_]Window.Key{
@@ -442,6 +452,9 @@ pub const KeyBoard = struct { // MARK: KeyBoard
 		.{.name = "gpuPerformanceOverlay", .key = c.GLFW_KEY_F5, .pressAction = &toggleGPUPerformanceOverlay},
 		.{.name = "networkDebugOverlay", .key = c.GLFW_KEY_F6, .pressAction = &toggleNetworkDebugOverlay},
 		.{.name = "advancedNetworkDebugOverlay", .key = c.GLFW_KEY_F7, .pressAction = &toggleAdvancedNetworkDebugOverlay},
+		// Recording Client
+		.{.name = "openClientSettings", .key = c.GLFW_KEY_GRAVE_ACCENT, .pressAction = &openClientSettings},
+		.{.name = "cinematicCamera", .pressAction = &toggleCinematicCamera},
 	};
 
 	pub fn key(name: []const u8) *const Window.Key { // TODO: Maybe I should use a hashmap here?
