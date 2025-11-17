@@ -425,7 +425,7 @@ pub const KeyBoard = struct { // MARK: KeyBoard
 		// debug:
 		.{.name = "hideMenu", .key = c.GLFW_KEY_F1, .pressAction = &toggleHideGui},
 		.{.name = "hideDisplayItem", .key = c.GLFW_KEY_F2, .pressAction = &toggleHideDisplayItem},
-		.{.name = "togglePlayerNames", .key = c.GLFW_KEY_F2, .pressAction = &toggleHidePlayerNames},
+		.{.name = "togglePlayerNames", .pressAction = &toggleHidePlayerNames},
 		.{.name = "debugOverlay", .key = c.GLFW_KEY_F3, .pressAction = &toggleDebugOverlay},
 		.{.name = "performanceOverlay", .key = c.GLFW_KEY_F4, .pressAction = &togglePerformanceOverlay},
 		.{.name = "gpuPerformanceOverlay", .key = c.GLFW_KEY_F5, .pressAction = &toggleGPUPerformanceOverlay},
