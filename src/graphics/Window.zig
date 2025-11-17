@@ -535,7 +535,13 @@ pub const GLFWCallbacks = struct { // MARK: GLFWCallbacks
 				averagedDelta += delta;
 			}
 			averagedDelta /= @splat(deltasLen);
-			main.game.camera.moveRotation(averagedDelta[0]*0.0089, averagedDelta[1]*0.0089);
+
+			if(main.game.camera.cinematicMode) {
+				main.game.camera.cinematicCamera.vel += Vec2f{averagedDelta[0]*0.0089, averagedDelta[1]*0.0089};
+			} else {
+				main.game.camera.moveRotation(averagedDelta[0]*0.0089, averagedDelta[1]*0.0089);
+			}
+
 			deltaBufferPosition = (deltaBufferPosition + 1)%deltasLen;
 			deltas[deltaBufferPosition] = Vec2f{0, 0};
 		}

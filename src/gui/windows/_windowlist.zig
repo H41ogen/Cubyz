@@ -32,3 +32,4 @@ pub const settings = @import("settings.zig");
 pub const sign_editor = @import("sign_editor.zig");
 pub const sound = @import("sound.zig");
 pub const workbench = @import("workbench.zig");
+pub const client_settings = @import("client_settings.zig");
