@@ -18,6 +18,8 @@ const NeverFailingAllocator = main.heap.NeverFailingAllocator;
 
 const BinaryReader = main.utils.BinaryReader;
 
+pub var namesHidden = false;
+
 pub const EntityNetworkData = struct {
 	id: u32,
 	pos: Vec3d,
