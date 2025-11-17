@@ -638,7 +638,7 @@ pub const World = struct { // MARK: World
 
 		self.itemDrops.init(main.globalAllocator);
 		errdefer self.itemDrops.deinit();
-		try network.protocols.handShake.clientSide(self.conn, settings.playerName);
+		try network.Protocols.handShake.clientSide(self.conn, settings.playerName);
 
 		main.Window.setMouseGrabbed(true);
 
@@ -754,7 +754,7 @@ pub const World = struct { // MARK: World
 			fog.fogLower = biomeFog.fogLower;
 			fog.fogHigher = biomeFog.fogHigher;
 		}
-		network.protocols.playerPosition.send(self.conn, Player.getPosBlocking(), Player.getVelBlocking(), @intCast(newTime & 65535));
+		network.Protocols.playerPosition.send(self.conn, Player.getPosBlocking(), Player.getVelBlocking(), @intCast(newTime & 65535));
 	}
 };
 pub var testWorld: World = undefined; // TODO:
@@ -793,6 +793,8 @@ pub fn pressAcquireSelectedBlock(_: main.Window.Key.Modifiers) void {
 }
 
 pub fn flyToggle(_: main.Window.Key.Modifiers) void {
+	if(!Player.isCreative()) return;
+
 	const newIsFlying = !Player.isActuallyFlying();
 
 	Player.isFlying.store(newIsFlying, .monotonic);
@@ -800,6 +802,8 @@ pub fn flyToggle(_: main.Window.Key.Modifiers) void {
 }
 
 pub fn ghostToggle(_: main.Window.Key.Modifiers) void {
+	if(!Player.isCreative()) return;
+
 	const newIsGhost = !Player.isGhost.load(.monotonic);
 
 	Player.isGhost.store(newIsGhost, .monotonic);
@@ -807,6 +811,8 @@ pub fn ghostToggle(_: main.Window.Key.Modifiers) void {
 }
 
 pub fn hyperSpeedToggle(_: main.Window.Key.Modifiers) void {
+	if(!Player.isCreative()) return;
+
 	Player.hyperSpeed.store(!Player.hyperSpeed.load(.monotonic), .monotonic);
 }
 
