@@ -31,7 +31,9 @@ pub const camera = struct { // MARK: camera
 	pub var rotation: Vec3f = Vec3f{0, 0, 0};
 	pub var direction: Vec3f = Vec3f{0, 0, 0};
 	pub var viewMatrix: Mat4f = Mat4f.identity();
+
 	pub var cinematicMode = false;
+	pub var zoomActive = false;
 
 	pub const cinematicCamera = struct {
 		pub var vel: Vec2f = .{0, 0};
@@ -45,14 +47,14 @@ pub const camera = struct { // MARK: camera
 
 	pub fn moveRotation(mouseX: f32, mouseY: f32) void {
 		// Mouse movement along the y-axis rotates the image along the x-axis.
-		rotation[0] += mouseY;
+		rotation[0] += if(zoomActive) mouseY/settings.zoomFactor else mouseY;
 		if(rotation[0] > std.math.pi/2.0) {
 			rotation[0] = std.math.pi/2.0;
 		} else if(rotation[0] < -std.math.pi/2.0) {
 			rotation[0] = -std.math.pi/2.0;
 		}
 		// Mouse movement along the x-axis rotates the image along the z-axis.
-		rotation[2] += mouseX;
+		rotation[2] += if(zoomActive) mouseX/settings.zoomFactor else mouseX;
 	}
 
 	pub fn updateViewMatrix() void {
@@ -939,8 +941,15 @@ pub fn update(deltaTime: f64) void { // MARK: update()
 			acc += movementDir*@as(Vec3d, @splat(movementSpeed*fricMul));
 		}
 
-		const newSlot: i32 = @as(i32, @intCast(Player.selectedSlot)) -% @as(i32, @intFromFloat(main.Window.scrollOffset));
-		Player.selectedSlot = @intCast(@mod(newSlot, 12));
+		if(camera.zoomActive) {
+			const newZoomFactor = std.math.clamp(settings.zoomFactor + main.Window.scrollOffset, 1, 20);
+			settings.zoomFactor = newZoomFactor;
+			settings.save();
+			renderer.updateViewport(main.Window.width, main.Window.height, settings.fov/settings.zoomFactor);
+		} else {
+			const newSlot: i32 = @as(i32, @intCast(Player.selectedSlot)) -% @as(i32, @intFromFloat(main.Window.scrollOffset));
+			Player.selectedSlot = @intCast(@mod(newSlot, 12));
+		}
 		main.Window.scrollOffset = 0;
 
 		const newPos = Vec2f{

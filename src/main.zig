@@ -360,6 +360,15 @@ fn toggleCinematicCamera(_: Window.Key.Modifiers) void {
 	game.camera.cinematicMode = !game.camera.cinematicMode;
 	gui.windowlist.client_settings.needsUpdate = true;
 }
+fn toggleZoom() void {
+	if(game.camera.zoomActive) {
+		game.camera.zoomActive = false;
+		renderer.updateViewport(Window.width, Window.height, settings.fov);
+	} else {
+		game.camera.zoomActive = true;
+		renderer.updateViewport(Window.width, Window.height, settings.fov/settings.zoomFactor);
+	}
+}
 
 pub const KeyBoard = struct { // MARK: KeyBoard
 	const c = Window.c;
@@ -444,6 +453,7 @@ pub const KeyBoard = struct { // MARK: KeyBoard
 		// Recording Client
 		.{.name = "openClientSettings", .key = c.GLFW_KEY_GRAVE_ACCENT, .pressAction = &openClientSettings},
 		.{.name = "cinematicCamera", .pressAction = &toggleCinematicCamera},
+		.{.name = "toggleZoom", .key = c.GLFW_KEY_Z, .pressAction = &toggleZoom},
 	};
 
 	fn findKey(name: []const u8) ?*Window.Key { // TODO: Maybe I should use a hashmap here?
