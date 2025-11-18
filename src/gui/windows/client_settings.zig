@@ -24,6 +24,9 @@ pub var needsUpdate: bool = false;
 fn frictionFormatter(allocator: main.heap.NeverFailingAllocator, value: f32) []const u8 {
 	return std.fmt.allocPrint(allocator.allocator, "Friction: {d:.2}", .{value}) catch unreachable;
 }
+fn zoomFactorFormatter(allocator: main.heap.NeverFailingAllocator, value: f32) []const u8 {
+	return std.fmt.allocPrint(allocator.allocator, "Magnification: {d:.0}", .{value}) catch unreachable;
+}
 
 fn updateCinematicCamera(newValue: bool) void {
 	main.game.camera.cinematicCamera.vel = @splat(0);
@@ -32,13 +35,21 @@ fn updateCinematicCamera(newValue: bool) void {
 fn updateCinematicCameraFriction(newValue: f32) void {
 	main.game.camera.cinematicCamera.friction = @round(newValue*100)/100;
 }
+fn updateZoomFactor(newValue: f32) void {
+	main.settings.zoomFactor = @round(newValue);
+	main.settings.save();
+	if(main.game.camera.zoomActive) main.renderer.updateViewport(main.Window.width, main.Window.height, main.settings.fov/main.settings.zoomFactor);
+}
 
 pub fn onOpen() void {
 	const list = VerticalList.init(.{padding, 16 + padding}, 364, 8);
 
-	list.add(Label.init(.{0, 0}, 192, "Cinematic Camera", .center));
+	list.add(Label.init(.{0, padding}, 192, "Cinematic Camera", .center));
 	list.add(CheckBox.init(.{0, 0}, 192, "Enabled?", main.game.camera.cinematicMode, &updateCinematicCamera));
 	list.add(ContinuousSlider.init(.{0, 0}, 192, 0, 1, main.game.camera.cinematicCamera.friction, &updateCinematicCameraFriction, &frictionFormatter));
+
+	list.add(Label.init(.{0, padding}, 192, "Zoom", .center));
+	list.add(ContinuousSlider.init(.{0, 0}, 192, 1, 20, main.settings.zoomFactor, &updateZoomFactor, &zoomFactorFormatter));
 
 	list.finish(.center);
 	window.rootComponent = list.toComponent();
