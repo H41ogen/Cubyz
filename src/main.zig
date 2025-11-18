@@ -360,7 +360,7 @@ fn toggleCinematicCamera(_: Window.Key.Modifiers) void {
 	game.camera.cinematicMode = !game.camera.cinematicMode;
 	gui.windowlist.client_settings.needsUpdate = true;
 }
-fn toggleZoom() void {
+fn toggleZoom(_: Window.Key.Modifiers) void {
 	if(game.camera.zoomActive) {
 		game.camera.zoomActive = false;
 		renderer.updateViewport(Window.width, Window.height, settings.fov);
