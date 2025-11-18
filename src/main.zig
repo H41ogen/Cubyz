@@ -43,6 +43,7 @@ const file_monitor = utils.file_monitor;
 
 const Vec2f = vec.Vec2f;
 const Vec3d = vec.Vec3d;
+const Mat4f = vec.Mat4f;
 
 pub threadlocal var stackAllocator: heap.NeverFailingAllocator = undefined;
 pub threadlocal var seed: u64 = undefined;
@@ -361,13 +362,7 @@ fn toggleCinematicCamera(_: Window.Key.Modifiers) void {
 	gui.windowlist.client_settings.needsUpdate = true;
 }
 fn toggleZoom(_: Window.Key.Modifiers) void {
-	if(game.camera.zoomActive) {
-		game.camera.zoomActive = false;
-		renderer.updateViewport(Window.width, Window.height, settings.fov);
-	} else {
-		game.camera.zoomActive = true;
-		renderer.updateViewport(Window.width, Window.height, settings.fov/settings.zoomFactor);
-	}
+	game.camera.zoomActive = !game.camera.zoomActive;
 }
 
 pub const KeyBoard = struct { // MARK: KeyBoard
@@ -666,7 +661,11 @@ pub fn clientMain() void { // MARK: clientMain()
 
 		if(!isHidden) {
 			if(game.world != null) {
-				renderer.updateFov(settings.fov);
+				if(game.camera.zoomActive) {
+					renderer.updateFov(settings.fov/settings.zoomFactor);
+				} else {
+					renderer.updateFov(settings.fov);
+				}
 				renderer.render(game.Player.getEyePosBlocking(), deltaTime);
 			} else {
 				renderer.updateFov(70.0);

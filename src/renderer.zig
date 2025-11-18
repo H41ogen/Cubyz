@@ -131,6 +131,7 @@ pub var lastHeight: u31 = 0;
 var lastFov: f32 = 0;
 pub fn updateFov(fov: f32) void {
 	if(lastFov != fov) {
+		std.log.info("{d}", .{fov});
 		lastFov = fov;
 		game.projectionMatrix = Mat4f.perspective(std.math.degreesToRadians(fov), @as(f32, @floatFromInt(lastWidth))/@as(f32, @floatFromInt(lastHeight)), zNear, zFar);
 	}

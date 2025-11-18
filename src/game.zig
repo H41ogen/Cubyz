@@ -945,7 +945,6 @@ pub fn update(deltaTime: f64) void { // MARK: update()
 			const newZoomFactor = std.math.clamp(settings.zoomFactor + main.Window.scrollOffset, 1, 20);
 			settings.zoomFactor = newZoomFactor;
 			settings.save();
-			renderer.updateViewport(main.Window.width, main.Window.height, settings.fov/settings.zoomFactor);
 		} else {
 			const newSlot: i32 = @as(i32, @intCast(Player.selectedSlot)) -% @as(i32, @intFromFloat(main.Window.scrollOffset));
 			Player.selectedSlot = @intCast(@mod(newSlot, 12));

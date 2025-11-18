@@ -38,7 +38,6 @@ fn updateCinematicCameraFriction(newValue: f32) void {
 fn updateZoomFactor(newValue: f32) void {
 	main.settings.zoomFactor = @round(newValue);
 	main.settings.save();
-	if(main.game.camera.zoomActive) main.renderer.updateViewport(main.Window.width, main.Window.height, main.settings.fov/main.settings.zoomFactor);
 }
 
 pub fn onOpen() void {
