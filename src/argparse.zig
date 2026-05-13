@@ -64,12 +64,12 @@ pub fn Parser(comptime T: type, comptime options: Options) type {
 			.parse => error{ParseError}!T,
 		} {
 			var result: T = undefined;
-			var split = std.mem.splitScalar(u8, args, ' ');
+			var tokens = std.mem.tokenizeScalar(u8, args, ' ');
 
 			var tempErrorMessage: ListUnmanaged(u8) = .{};
 			defer tempErrorMessage.deinit(main.stackAllocator);
 
-			var nextArgument: ?[]const u8 = split.next();
+			var nextArgument: ?[]const u8 = tokens.next();
 
 			inline for (s.fields) |field| {
 				const value = resolveArgument(field.type, allocator, field.name[0..], nextArgument, &tempErrorMessage);
@@ -85,7 +85,7 @@ pub fn Parser(comptime T: type, comptime options: Options) type {
 				} else {
 					@field(result, field.name) = value catch unreachable;
 					tempErrorMessage.clearRetainingCapacity();
-					nextArgument = split.next();
+					nextArgument = tokens.next();
 				}
 			}
 
