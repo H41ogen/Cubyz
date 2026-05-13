@@ -320,10 +320,10 @@ test "x or xy negative empty" {
 	try std.testing.expectEqualStrings(
 		\\---
 		\\x
-		\\Expected a number for <x>, found ""
+		\\Missing argument at position <x>
 		\\---
 		\\xy
-		\\Expected a number for <x>, found ""
+		\\Missing argument at position <x>
 		\\---
 	, errors.items);
 	try std.testing.expectError(error.ParseError, resultOrError);
